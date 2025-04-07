@@ -1,30 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/07 09:49:25 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/07 14:11:30 by ldevoude         ###   ########lyon.fr   */
+/*   Created: 2025/04/07 12:22:53 by ldevoude          #+#    #+#             */
+/*   Updated: 2025/04/07 12:23:04 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include "../libftx/libft.h"
-# include <fcntl.h>
-//# include <unistd.h>
-//# include <stdio.h>
-//# include <sys/types.h>
-# define TRUE 1
-# define FALSE 0
+#include "header/pipex.h"
 
-int        main(int argc, char *argv[]);
-
-int ft_check_args(int argc, char *argv[]);
-int ft_check_infile (int argc, char *argv);
-
-void       exit_function(int error_code);
-
-#endif
+void    exit_function(int error_code)
+{
+    if (error_code == 1)
+        ft_printfd("./pipex infile ""ls -l" "wc -l"" outfile");
+    exit(error_code);
+}
