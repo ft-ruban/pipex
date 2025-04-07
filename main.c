@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:02:13 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/07 14:21:48 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/07 14:45:08 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 
 
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char **env)
 {
     //int          p_fd[2];
     //pid_t   pid;
     if (argc != 5)
         exit_function(1);
-    if (ft_check_args(argc, argv) == 1)
+    if (ft_check_args(argc, argv, env) == 1)
         exit_function(1);
     //TODO ft_init_pipex()
     //TODO if (ft_check_args() == 1)
