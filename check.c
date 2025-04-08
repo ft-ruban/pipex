@@ -6,20 +6,24 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:10:09 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/08 09:13:30 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/08 11:25:29 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header/pipex.h"
 
-int ft_check_infile (int argc, char *argv)
+//check if the infile does exist and if there is the right perm to read.
+//may have to check the code error but otherwise it is working.
+
+int ft_check_infile (char *argv)
 {
-    argc = 0;
     int fd;
+    
     fd = open(argv,O_RDONLY);
     if (fd == -1)
     {
         ft_printf("error opening %s, make sure it does exist\n", argv);
+        ft_printf("or if you have the permissions\n"); //TODO check for error code  with original pipe here.
         return (1);
     }
     else
@@ -29,31 +33,30 @@ int ft_check_infile (int argc, char *argv)
     }
 }
 
-int ft_check_cmd_one (char *cmd, char *path, int i)
+//will check the cmd to see if it does exist as an absolute
+//path or as a simple command, if it does return 0 else 1
+//no leaks and all cases seems to be working with it.
+
+int ft_check_cmd (char *cmd, char *path, int i)
 {
     char **result_split;
     char *full_path;
     char *buff;
     
-    //check if we get a pathlike cmd
+    if (ft_strlen(cmd) == 0)
+        return (1);
     if (ft_strchr(cmd,'/'))
-    {
-        printf("cmd : %s\n", cmd); //TODL
-        if (!access(cmd, X_OK))
-            return (0);
-        else 
-            return (1);
-    }
-    //split path to turn result_split into the return of split
+        return(is_already_pathed(cmd));
     result_split = ft_split(path, ':');
     if (!result_split)
         return (1);
-
     while (result_split[i])
     {
         buff = ft_strjoin(result_split[i], "/");
         full_path = ft_strjoin(buff, cmd);
-        free(buff);
+        if(!full_path)
+            return(free_check_args(buff,result_split,0, TRUE));
+        free(buff);   
         if(!access(full_path, X_OK))
         {
             printf("FULL_PATH = %s\n",full_path); //TODL
@@ -65,42 +68,31 @@ int ft_check_cmd_one (char *cmd, char *path, int i)
     return (free_check_args(NULL, result_split, 0, TRUE));
 }
 
-int free_check_args(char *path, char **cmd, int i, int error)
-{
-    while (cmd[i])
-    {
-        free(cmd[i]);
-        i++;
-    }
-    free(cmd);
-    if(path)
-        free(path);
-    return (error);   
-}
-int ft_check_args(int argc, char *argv[], char **env)
+int ft_check_args(char *argv[], char **env, int i)
 {
     char *path;
-    int i;
-    char **cmd;
     
-    argc = 0;
-    i = 0;
     path = NULL;
-    if(ft_check_infile(argc, argv[1]))
+    if(ft_check_infile(argv[1]))
         return (1);
     while (env[i] || !path)
     {
      if (!ft_strncmp(env[i], "PATH=", 5))  //5?
      {
+        printf("env[i] : %s\n",env[i]);
         path = ft_strdup(env[i]);
         break;
      }
      i++;
     }
-    cmd = ft_split(argv[2], ' ');
-    if(ft_check_cmd_one (cmd[0], path, 0))
-        return (free_check_args(path, cmd, 0, TRUE));
-    //ft_check_cmd_two (argc, argv[4]);
+    printf("argv[2] : %s\n",argv[2]);
+    if(ft_check_cmd (argv[2], path, 0))
+    {
+        free (path);
+        return (1);
+    }
+    //ft_check_cmd (argc, argv[4]);
     //ft_check_outfile (argc, argv[5])
-    return (free_check_args(path, cmd, 0, FALSE));
+    free(path);
+    return (0);
 }

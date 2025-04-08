@@ -6,7 +6,7 @@
 #    By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 15:21:37 by ldevoude          #+#    #+#              #
-#    Updated: 2025/04/07 14:11:50 by ldevoude         ###   ########lyon.fr    #
+#    Updated: 2025/04/08 09:31:29 by ldevoude         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ RED            =   \033[1;31m
 PIPEX_SRC    =   $(addsuffix .c, \
 						main \
 						check \
+						check_utils \
 						utils)
 
 #####################################################

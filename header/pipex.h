@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 09:49:25 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/08 08:59:10 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/08 10:50:06 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,12 @@
 
 int        main(int argc, char *argv[], char **env);
 
-int ft_check_args(int argc, char *argv[], char **env);
-int ft_check_infile (int argc, char *argv);
+int ft_check_args(char *argv[], char **env, int error);
+int ft_check_infile (char *argv);
+
+int is_already_pathed(char *cmd);
 int free_check_args(char *path, char **cmd, int i, int error);
+
 void       exit_function(int error_code);
 
 #endif
