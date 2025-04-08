@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:10:09 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/08 11:25:29 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/08 13:12:32 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,40 @@ int ft_check_cmd (char *cmd, char *path, int i)
     }
     return (free_check_args(NULL, result_split, 0, TRUE));
 }
+int ft_check_outfile (char *argv)
+{
+    int fd;
+    
+    fd = open(argv ,O_CREAT | O_RDONLY | O_TRUNC, 0644);
+    if (fd == -1)
+    {
+        ft_printf("error opening %s, make sure it does exist\n", argv);
+        ft_printf("or if you have the permissions\n"); //TODO check for error code  with original pipe here.
+        return (1);
+    }
+    else
+    {
+        close(fd);
+        return(0);
+    } 
+}
 
+int ft_check_args_final(char *argv[], char *path, int i)
+{
+    i = 0; //TORM
+    if(ft_check_cmd (argv[3], path, 0))
+    {
+        free (path);
+        return (127);
+    }
+    free(path);
+    if(ft_check_outfile (argv[5])) //check if it can fail
+    {
+        //free (path);
+        return (1);
+    }
+    return (0);
+}
 int ft_check_args(char *argv[], char **env, int i)
 {
     char *path;
@@ -91,7 +124,7 @@ int ft_check_args(char *argv[], char **env, int i)
         free (path);
         return (1);
     }
-    //ft_check_cmd (argc, argv[4]);
+    return (ft_check_args_final(argv,path, 0));
     //ft_check_outfile (argc, argv[5])
     free(path);
     return (0);

@@ -6,13 +6,14 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 09:49:25 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/08 10:50:06 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/08 11:51:41 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 # include "../libftx/libft.h"
+# include <unistd.h>
 # include <fcntl.h>
 //# include <unistd.h>
 //# include <stdio.h>
@@ -28,6 +29,6 @@ int ft_check_infile (char *argv);
 int is_already_pathed(char *cmd);
 int free_check_args(char *path, char **cmd, int i, int error);
 
-void       exit_function(int error_code);
+void       exit_function(int error_code, char **argv);
 
 #endif
