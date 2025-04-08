@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:10:09 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/08 13:12:32 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/08 16:36:47 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int ft_check_cmd (char *cmd, char *path, int i)
         return (1);
     while (result_split[i])
     {
-        buff = ft_strjoin(result_split[i], "/");
+        buff = NULL;//ft_strjoin(result_split[i], "/");
         full_path = ft_strjoin(buff, cmd);
         if(!full_path)
             return(free_check_args(buff,result_split,0, TRUE));
@@ -94,11 +94,8 @@ int ft_check_args_final(char *argv[], char *path, int i)
         return (127);
     }
     free(path);
-    if(ft_check_outfile (argv[5])) //check if it can fail
-    {
-        //free (path);
+    if(ft_check_outfile (argv[4])) //check if it can fail
         return (1);
-    }
     return (0);
 }
 int ft_check_args(char *argv[], char **env, int i)
@@ -124,8 +121,6 @@ int ft_check_args(char *argv[], char **env, int i)
         free (path);
         return (1);
     }
+    printf("ici\n");
     return (ft_check_args_final(argv,path, 0));
-    //ft_check_outfile (argc, argv[5])
-    free(path);
-    return (0);
 }
