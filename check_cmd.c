@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 13:31:59 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/10 16:39:58 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/10 16:50:26 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int ft_check_cmd (char *cmd, char *path, int i)
     cmd_separated_flags = NULL;
     if (ft_strlen(cmd) == 0)
         return (1);
-    i = 0;
     while ((cmd[i] >= 9 && cmd[i] <= 13) || cmd[i] == 32)
 		i++;
     if (cmd[i] == '\0')
@@ -63,6 +62,7 @@ int ft_check_cmd (char *cmd, char *path, int i)
     cmd_separated_flags = ft_split(cmd,' ');
     printf("cmd_separe %s\n", cmd_separated_flags[0]);
     buff = ft_strdup(cmd_separated_flags[0]);
+    i = 0;
     while(cmd_separated_flags[i])
     {
         free(cmd_separated_flags[i]);
