@@ -6,15 +6,11 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:02:13 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/08 11:46:34 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/10 15:04:30 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header/pipex.h"
-
-
-
-
 
 int main(int argc, char *argv[], char **env)
 {
@@ -36,6 +32,7 @@ int main(int argc, char *argv[], char **env)
     //TODO      ft_exec()
     //TODO ft_cleanup
     ft_printf("Program worked :>\n");
+    printf("CMD: %s\n",argv[2]);
     return(0);
 }
 
