@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 09:31:42 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/10 14:22:39 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/11 07:47:22 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,17 @@ int free_check_args(char *path, char **cmd, int i, int error)
     return (error);   
 }
 //TOMV into check_cmd?
-int is_already_pathed(char *cmd) 
+int is_already_pathed(char *cmd, char **result_split) 
 {
         printf("cmd : %s\n", cmd); //TODL
         if (!access(cmd, X_OK))
-            return (0);
-        else 
-            return (1);
+        {
+            free(cmd);
+            return(free_check_args(NULL, result_split, 0, FALSE));
+        }            
+        else
+        {
+            free(cmd);
+            return(free_check_args(NULL, result_split, 0, TRUE));        
+        }
 }

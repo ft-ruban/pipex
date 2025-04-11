@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 13:30:33 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/10 13:31:14 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/11 08:49:12 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int ft_check_infile (char *argv)
     fd = open(argv,O_RDONLY);
     if (fd == -1)
     {
-        ft_printf("error opening %s, make sure it does exist\n", argv);
+        ft_printf("error opening %s, make sure it does exist\n", argv); //TORM
         ft_printf("or if you have the permissions\n"); //TODO check for error code  with original pipe here.
         return (1);
     }

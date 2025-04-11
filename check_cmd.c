@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 13:31:59 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/10 16:50:26 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/11 09:18:56 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int ft_check_cmd_compare (char **result_split, char *buff, char *cmd, char *full
         full_path = ft_strjoin(buff, cmd);
         if(!full_path)
             return(free_check_args(buff,result_split,0, TRUE));
-        free(buff);   
+        free(buff);  
+        printf("PATH: %s\n", full_path); //TORM
         if(!access(full_path, X_OK))
         {
             free(cmd);
@@ -38,29 +39,24 @@ int ft_check_cmd_compare (char **result_split, char *buff, char *cmd, char *full
     }
     free(cmd);
     return (free_check_args(NULL, result_split, 0, TRUE));
-    //return (0);
 }
 
-int ft_check_cmd (char *cmd, char *path, int i)
+int ft_check_cmd (char *cmd, char *path, int i, char **cmd_separated_flags)
 {
     char **result_split;
-    char **cmd_separated_flags;
     char *buff;
     
-    cmd_separated_flags = NULL;
     if (ft_strlen(cmd) == 0)
         return (1);
     while ((cmd[i] >= 9 && cmd[i] <= 13) || cmd[i] == 32)
 		i++;
     if (cmd[i] == '\0')
         return (1);
-    if (ft_strchr(cmd,'/'))
-        return(is_already_pathed(cmd));
     result_split = ft_split(path, ':');
     if (!result_split)
         return (1);
     cmd_separated_flags = ft_split(cmd,' ');
-    printf("cmd_separe %s\n", cmd_separated_flags[0]);
+    printf("cmd_separe %s\n", cmd_separated_flags[0]); //TORM
     buff = ft_strdup(cmd_separated_flags[0]);
     i = 0;
     while(cmd_separated_flags[i])
@@ -69,8 +65,9 @@ int ft_check_cmd (char *cmd, char *path, int i)
         i++;
     }
     free(cmd_separated_flags);
+    if (ft_strchr(buff,'/'))
+        return(is_already_pathed(buff, result_split));
     return (ft_check_cmd_compare (result_split, NULL, buff, NULL));
 }
-
 
 
