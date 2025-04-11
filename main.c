@@ -6,28 +6,32 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:02:13 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/10 15:04:30 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/11 16:03:41 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header/pipex.h"
 
+int     ft_pipex(char **argv, char **env)
+{
+    
+}
+
+//TODO? ft_init_pipex()
 int main(int argc, char *argv[], char **env)
 {
     //int          p_fd[2];
     //pid_t   pid;
     int error_code;
-    if (argc != 5)
+    if (argc != 5)  //TODO if (ft_check_args() == 1)
         exit_function(1, argv);
-    error_code = (ft_check_args(argv, env, 0));
+    error_code = (ft_check_args(argv, env, 0));  //TODO ft_parse_cmds()  //TODO ft_parse_args()
     if (error_code != 0)
-        exit_function(error_code, argv);
+        exit_function(error_code, argv);  //TODO     exit_function(1);
+    ft_pipex(argv, env);
+   
+   
     
-    //TODO ft_init_pipex()
-    //TODO if (ft_check_args() == 1)
-    //TODO     exit_function(1);
-    //TODO ft_parse_cmds()
-    //TODO ft_parse_args()
     //TODO while (cmds)
     //TODO      ft_exec()
     //TODO ft_cleanup
