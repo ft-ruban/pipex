@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 13:31:59 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/11 15:41:12 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/14 15:24:57 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int ft_check_cmd_compare (char **result_split, char *buff, char *cmd, char *full
         if(!full_path)
             return(free_check_args(buff,result_split,0, TRUE));
         free(buff);  
-        printf("PATH: %s\n", full_path); //TORM
+        //printf("PATH: %s\n", full_path); //TORM
         if(!access(full_path, X_OK))
         {
             free(cmd);

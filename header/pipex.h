@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 09:49:25 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/11 08:54:09 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/14 12:41:16 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "../libftx/libft.h"
 # include <unistd.h>
 # include <fcntl.h>
+#include <sys/wait.h>
 //# include <unistd.h>
 //# include <stdio.h>
 //# include <sys/types.h>
