@@ -28,6 +28,6 @@ int     ft_pipex(char **argv, char **env)
         if (waitpid(second_child, &status, 0) == second_child)
             printf("both child terminated\n");
     close(pipe_fd[0]);
-    close(pipe_fd[1]);
+        close(pipe_fd[1]);
     return 0;
 }
