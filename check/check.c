@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:10:09 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/14 14:46:42 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 11:52:09 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int ft_check_args(char *argv[], char **env, int i)
         {
             printf("env[i] : %s\n",env[i]); //TORM
             path = ft_strdup(env[i]);
+            if (!path)
+                return(2); //check right error
             break;
         }
         i++;

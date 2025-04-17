@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 13:31:59 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/14 15:24:57 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 13:50:53 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int ft_check_cmd_compare (char **result_split, char *buff, char *cmd, char *full
         buff = ft_strjoin(result_split[i], "/");
         full_path = ft_strjoin(buff, cmd);
         if(!full_path)
+        {
+            free(cmd);
             return(free_check_args(buff,result_split,0, TRUE));
+        }
         free(buff);  
         //printf("PATH: %s\n", full_path); //TORM
         if(!access(full_path, X_OK))
@@ -56,18 +59,21 @@ int ft_check_cmd (char *cmd, char *path, int i, char **cmd_separated_flags)
     if (!result_split)
         return (1);
     cmd_separated_flags = ft_split(cmd,' ');
+    if (!cmd_separated_flags)
+        return(free_check_args(NULL, result_split, 0, 1));
     printf("cmd_separe %s\n", cmd_separated_flags[0]); //TORM
     buff = ft_strdup(cmd_separated_flags[0]);
-    i = 0;
-    while(cmd_separated_flags[i])
+    if (!buff)
     {
-        free(cmd_separated_flags[i]);
-        i++;
+        free_double_array(cmd_separated_flags, result_split, buff, NULL);
+        return (1);
     }
-    free(cmd_separated_flags);
+    free_double_array(cmd_separated_flags,NULL,NULL,NULL);
     if (ft_strchr(buff,'/'))
         return(is_already_pathed(buff, result_split));
     return (ft_check_cmd_compare (result_split, NULL, buff, NULL));
 }
+
+
 
 

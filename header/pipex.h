@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 09:49:25 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/15 16:49:46 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 11:45:50 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,13 @@ int is_already_pathed(char *cmd, char **result_split);
 
 int free_check_args(char *path, char **cmd, int i, int error);
 
-void child_in(char **argv, char **env, int flag_open, int *fd);
+void child_in(char **argv, char **env, int *fd);
+void child_out(char **argv, char **env, int *fd);
+char *find_path(char *path, char *cmd);
+
 void child_error(int infile, int *fd);
+char *free_double_array(char **one, char **two, char *three, char *four);
+char *return_path(char **env, char *cmd);
 
 void exit_function(int error_code, char **argv);
 

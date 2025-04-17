@@ -6,7 +6,7 @@
 #    By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 15:21:37 by ldevoude          #+#    #+#              #
-#    Updated: 2025/04/15 16:19:17 by ldevoude         ###   ########lyon.fr    #
+#    Updated: 2025/04/17 11:50:45 by ldevoude         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ CFLAGS         =   -Wall -Wextra -Werror -g
 #####################################################
 DIR_PIPEX  =   .
 DIR_PIPEX_CHECK =  ./check
+DIR_PIPEX_CHILD =  ./child
 DIR_LIBFTX     =   ./libftx
 OBJ_DIR        =   obj_pipex
 
@@ -63,8 +64,10 @@ PIPEX_SRC    =   $(addsuffix .c, \
 						check_cmd \
 						check_file \
 						check_utils \
-						check \
 						child_in \
+						child_out\
+						child_utils \
+						check \
 						ft_pipex\
 						utils)
 
@@ -73,6 +76,10 @@ PIPEX_CHECK_SRC = $(addsuffix .c, \
 						check_file \
 						check_utils \
 						check)
+PIPEX_CHILD_SRC = $(addsuffix .c, \
+						child_in \
+						child_out\
+						child_utils)
 
 #####################################################
 #					VARIABLES_OBJ				    #
@@ -80,7 +87,7 @@ PIPEX_CHECK_SRC = $(addsuffix .c, \
 
 PIPEX_OBJ = $(addprefix $(OBJ_DIR)/, $(PIPEX_SRC:.c=.o))
 PIPEX_CHECK_OBJ = $(addprefix $(OBJ_DIR)/, $(PIPEX_CHECK_SRC:.c=.o))
-#DELETE_MOI_OBJ = $(addprefix $(OBJ_DIR)/, $(DELETE_MOI_SRC:.c=.o))
+PIPEX_CHILD_OBJ = $(addprefix $(OBJ_DIR)/, $(PIPEX_CHILD_SRC:.c=.o))
 DEPENDANCY_FILES =   $(PIPEX_OBJ:.o=.d) #to create dep
 
 #####################################################
@@ -128,7 +135,7 @@ re               :	fclean all
 $(LIBLIBFTX):
 	$(MAKE) -C $(DIR_LIBFTX)
 
-$(NAME): $(OBJ_DIR) $(PIPEX_OBJ) $(PIPEX_CHECK_OBJ) $(HEADER_PIPEX) $(LIBLIBFTX)
+$(NAME): $(OBJ_DIR) $(PIPEX_OBJ) $(PIPEX_CHECK_OBJ) $(PIPEX_CHILD_OBJ) $(HEADER_PIPEX) $(LIBLIBFTX)
 		 $(CC) $(CFLAGS) -o $(NAME) $(PIPEX_OBJ) $(LIBLIBFTX)
 		@echo "$(GREEN) $(NAME) is now ready to run ／人◕ ‿‿ ◕人＼ "
 
@@ -136,7 +143,10 @@ $(OBJ_DIR)/%.o	   : $(DIR_PIPEX)/%.c | $(OBJ_DIR)
 					 $(CC) $(CFLAGS) -I$(DIR_PIPEX) -o $@ -c $<
 
 $(OBJ_DIR)/%.o	   : $(DIR_PIPEX_CHECK)/%.c | $(OBJ_DIR)
-					 $(CC) $(CFLAGS) -I$(DIR_PIPEX_CHECK) -o $@ -c $<					 
+					 $(CC) $(CFLAGS) -I$(DIR_PIPEX_CHECK) -o $@ -c $<	
+
+$(OBJ_DIR)/%.o	   : $(DIR_PIPEX_CHILD)/%.c | $(OBJ_DIR)
+					 $(CC) $(CFLAGS) -I$(DIR_PIPEX_CHILD) -o $@ -c $<					 
 
 $(DIR_PIPEX)/%.o  :      $(DIR_PIPEX)/%.c $(HEADER_PIPEX)
 											$(CC) $(CFLAGS) -c $< -o $@
