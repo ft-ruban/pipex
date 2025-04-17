@@ -6,13 +6,11 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:27:36 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/17 15:13:26 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 16:40:33 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/pipex.h"
-
-//SEEM CLEAN (LEAKS)
 
 char *find_path_loop(char **result_split, char *buff, char *cmd, char *full_path)
 {
@@ -43,7 +41,7 @@ char *find_path_loop(char **result_split, char *buff, char *cmd, char *full_path
     exit(-1);
 }
 //Checked leaks no leaks 
-char * find_path(char *path, char *cmd)
+char *find_path(char *path, char *cmd)
 {
     char **result_split;
     int i;
@@ -63,74 +61,41 @@ char * find_path(char *path, char *cmd)
     if (!buff)
         return(free_double_array(result_split,cmd_separated_flags, NULL, NULL));
 
-    free_double_array(NULL,cmd_separated_flags, NULL, NULL);
+    free_double_array(NULL,cmd_separated_flags, path, NULL);
     return(find_path_loop(result_split, NULL, buff, NULL));
 }
 
-void child_in_exec_pathed(char *cmd, char **env, int *fd, char *path)
-{
-    char **split_result;
-    char **split_args;
-    int i;
-    char **result;
-
-    i = 0;
-    env = NULL; //TODL?
-    path = ft_strdup(cmd);
-    if(!path)
-        child_error(-42, fd);
-    split_result = ft_split(path, ' '); //FAIT
-    if (!split_result)
-    {
-        free(path);
-        child_error(-42, fd);
-    }
-    ft_printfd("PATHQQQQQQQQQQQQQQQu = %s\n", split_result[0]);
-    ft_printfd("CMD = %s\n", cmd);
-    split_args = ft_split(cmd, '/');
-    if(!split_args)
-    {
-        free_double_array(split_result,NULL, path, NULL);
-        child_error(-42, fd);
-    }
-    while (split_args[i])
-        i++;
-    result = ft_split(split_args[i-1], ' ');
-    if (!result)
-    {
-        free_double_array(split_result,split_args, path, NULL);
-        child_error(-42, fd);
-    }
-    ft_printfd("result = %s\n", result[0]);
-    ft_printfd("result1 = %s\n", result[1]);
-    ft_printfd("result2 = %s\n", result[2]);
-    execve(split_result[0], result, NULL);
-    ft_printfd("IT DOESNT WORK HWDHDHDWH\n");
-}
-
+//25 lines if I rm the printfd LESS GO
 void child_in_exec(char *cmd, char **env, int *fd)
 {
     char *path;
     char **args;
+    char *path_param;
+
+    path_param = NULL;
     if (!ft_strchr(cmd,'/'))
     {
-        path = return_path(env, cmd); 
+        path = return_path(env, cmd, path_param); 
         if (path == NULL)
             child_error(-42, fd);
+        ft_printfd("PATHQQQQQQQQQQQQQQQ = %s\n", path);
+        args = ft_split(cmd,' '); //PROTECT
+        if(!args)
+        {
+            free(path);
+            child_error(-42, fd);
+        }
+        ft_printfd("THEENDOFCHILDIN\n\n\n\n\n\n",args[2]);
+        execve(path, args, NULL);
+        free_double_array(args,NULL, path, NULL);
+        exit(-1);
     }
-    else
+    else    
     {
         path = NULL;
-        child_in_exec_pathed(cmd,env,fd,path); //WIP
+        child_in_pathed_exec(cmd,fd,path);
     }
-    ft_printfd("PATHQQQQQQQQQQQQQQQ = %s\n", path);
-    args = ft_split(cmd,' '); //PROTECT
-    ft_printfd("THEENDOFCHILDIN\n\n\n\n\n\n",args[2]);
-    execve(path, args, NULL);
-    ft_printfd("IT FAILED\n");
-    exit(-1);
 }
-
 
 //HAVE BEEN VERIFIED NO MALLOC PROBLEMS yeepee
 

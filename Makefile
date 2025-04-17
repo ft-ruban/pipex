@@ -6,7 +6,7 @@
 #    By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 15:21:37 by ldevoude          #+#    #+#              #
-#    Updated: 2025/04/17 11:50:45 by ldevoude         ###   ########lyon.fr    #
+#    Updated: 2025/04/17 16:33:10 by ldevoude         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,6 +64,7 @@ PIPEX_SRC    =   $(addsuffix .c, \
 						check_cmd \
 						check_file \
 						check_utils \
+						child_in_pathed\
 						child_in \
 						child_out\
 						child_utils \
@@ -77,6 +78,7 @@ PIPEX_CHECK_SRC = $(addsuffix .c, \
 						check_utils \
 						check)
 PIPEX_CHILD_SRC = $(addsuffix .c, \
+						child_in_pathed\
 						child_in \
 						child_out\
 						child_utils)

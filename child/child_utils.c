@@ -6,20 +6,20 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:29:05 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/17 14:40:58 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 15:57:37 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/pipex.h"
 
-char *return_path(char **env, char *cmd)
+char *return_path(char **env, char *cmd, char *path)
 {
     int i;
-    char *path;
+    //char *path;
     char *final_result;
     
     final_result = NULL;
-    path = NULL;
+    //path = NULL;
     i = 0;
     while (env[i] || !path)
     {

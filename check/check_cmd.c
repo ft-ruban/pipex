@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 13:31:59 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/17 13:50:53 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 16:38:01 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int ft_check_cmd (char *cmd, char *path, int i, char **cmd_separated_flags)
     }
     free_double_array(cmd_separated_flags,NULL,NULL,NULL);
     if (ft_strchr(buff,'/'))
-        return(is_already_pathed(buff, result_split));
+        return(check_is_already_pathed(buff, result_split));
     return (ft_check_cmd_compare (result_split, NULL, buff, NULL));
 }
 
