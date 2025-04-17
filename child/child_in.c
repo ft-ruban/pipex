@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:27:36 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/17 11:59:52 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 15:13:26 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@ char *find_path_loop(char **result_split, char *buff, char *cmd, char *full_path
         buff = ft_strjoin(result_split[i], "/"); 
         if(!buff)
             return(free_double_array(NULL,result_split, cmd, NULL));
-        ft_printfd("CMD = %s\n",cmd);
-        ft_printfd("BUFF VITE = %s\n",buff);
-        full_path = ft_strjoin(buff, cmd); //fait
+        ft_printfd("CMD = %s\n",cmd);//TORM
+        ft_printfd("BUFF VITE = %s\n",buff); //TORM
+        full_path = ft_strjoin(buff, cmd);
         if(!full_path)
             return(free_double_array(NULL,result_split, cmd, buff));
-        ft_printfd("FUL_PATH = %s\n",full_path);
+        ft_printfd("FUL_PATH = %s\n",full_path); //TORM
         free(buff);  
         if(!access(full_path, X_OK))
         {
             free_double_array(result_split, NULL, cmd, NULL);
-            ft_printfd("FUL_PATHsucc = %s\n",full_path);
+            ft_printfd("FUL_PATHsucc = %s\n",full_path); //TORM
             return (full_path);
         }
         free(full_path);
@@ -43,7 +43,7 @@ char *find_path_loop(char **result_split, char *buff, char *cmd, char *full_path
     exit(-1);
 }
 //Checked leaks no leaks 
-char *find_path(char *path, char *cmd)
+char * find_path(char *path, char *cmd)
 {
     char **result_split;
     int i;
@@ -72,21 +72,39 @@ void child_in_exec_pathed(char *cmd, char **env, int *fd, char *path)
     char **split_result;
     char **split_args;
     int i;
+    char **result;
 
     i = 0;
-    env = NULL;
+    env = NULL; //TODL?
     path = ft_strdup(cmd);
     if(!path)
         child_error(-42, fd);
-    split_result = ft_split(path, ' '); //check si quelqu'un met des espaces partouts + leaks
+    split_result = ft_split(path, ' '); //FAIT
+    if (!split_result)
+    {
+        free(path);
+        child_error(-42, fd);
+    }
     ft_printfd("PATHQQQQQQQQQQQQQQQu = %s\n", split_result[0]);
     ft_printfd("CMD = %s\n", cmd);
-    split_args = ft_split(cmd, '/'); //secure leaks
+    split_args = ft_split(cmd, '/');
+    if(!split_args)
+    {
+        free_double_array(split_result,NULL, path, NULL);
+        child_error(-42, fd);
+    }
     while (split_args[i])
         i++;
-    split_args = ft_split(split_args[i-1], ' ');
-    ft_printfd("SPLIT_ARGS = %s\n", split_args[1]);
-    execve(split_result[0], split_args, NULL);
+    result = ft_split(split_args[i-1], ' ');
+    if (!result)
+    {
+        free_double_array(split_result,split_args, path, NULL);
+        child_error(-42, fd);
+    }
+    ft_printfd("result = %s\n", result[0]);
+    ft_printfd("result1 = %s\n", result[1]);
+    ft_printfd("result2 = %s\n", result[2]);
+    execve(split_result[0], result, NULL);
     ft_printfd("IT DOESNT WORK HWDHDHDWH\n");
 }
 
@@ -94,17 +112,16 @@ void child_in_exec(char *cmd, char **env, int *fd)
 {
     char *path;
     char **args;
-
     if (!ft_strchr(cmd,'/'))
     {
-        path = return_path(env, cmd); //WIP
+        path = return_path(env, cmd); 
         if (path == NULL)
             child_error(-42, fd);
     }
     else
     {
         path = NULL;
-        child_in_exec_pathed(cmd,env,fd,path);
+        child_in_exec_pathed(cmd,env,fd,path); //WIP
     }
     ft_printfd("PATHQQQQQQQQQQQQQQQ = %s\n", path);
     args = ft_split(cmd,' '); //PROTECT
@@ -120,7 +137,6 @@ void child_in_exec(char *cmd, char **env, int *fd)
 void    child_in(char **argv, char **env, int *fd)
 {
     int infile;
-
     ft_printfd("Child IN\n");
     close(fd[0]);
     infile = -42;
@@ -130,7 +146,7 @@ void    child_in(char **argv, char **env, int *fd)
     if(dup2(fd[1], STDOUT_FILENO) == -1) 
         child_error(infile, fd);
     if(dup2(infile, STDIN_FILENO) == -1)
-        child_error(infile, fd);  
+        child_error(infile, fd);
     close(fd[1]);
     close(infile); 
     child_in_exec(argv[2], env, fd);

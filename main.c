@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:02:13 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/15 16:18:07 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 13:57:48 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,22 @@
 //TODO? ft_init_pipex()
 int main(int argc, char *argv[], char **env)
 {
-    //int          p_fd[2];
-    //pid_t   pid;
     int error_code;
     if (argc != 5)  //TODO if (ft_check_args() == 1)
+    {
+        ft_printfd("NOT 5 ARG\n");
         exit_function(1, argv);
+    }
     error_code = (ft_check_args(argv, env, 0));  //TODO ft_parse_cmds()  //TODO ft_parse_args()
     if (error_code != 0)
-        exit_function(error_code, argv);  //TODO     exit_function(1);
+    {
+        ft_printfd("PARSING ERROR\n");
+        exit_function(error_code, argv);
+    }
+    ft_printfd("PARSING PASSED\n");    
     ft_printfd("\n\n\n\n");
-    ft_pipex(argv, env);
-   
-   
     
+    ft_pipex(argv, env);
     //TODO while (cmds)
     //TODO      ft_exec()
     //TODO ft_cleanup

@@ -9,7 +9,6 @@ int     ft_pipex(char **argv, char **env)
 
     if(pipe(pipe_fd) == -1)
         exit(-1);
-
     first_child = fork();
     if (first_child == -1)
         exit(-1);
