@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 13:30:33 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/11 15:41:19 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/21 14:31:46 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,16 @@
 //check if the infile does exist and if there is the right perm to read.
 //may have to check the code error but otherwise it is working.
 
-int ft_check_infile (char *argv)
+int ft_check_infile (char **argv)
 {
     int fd;
     
-    fd = open(argv,O_RDONLY);
+    fd = open(argv[1],O_RDONLY);
     if (fd == -1)
     {
-        ft_printf("error opening %s, make sure it does exist\n", argv); //TORM
-        ft_printf("or if you have the permissions\n"); //TODO check for error code  with original pipe here.
+        // ft_printf("error opening %s, make sure it does exist\n", argv); //TORM
+        // ft_printf("or if you have the permissions\n"); //TODO check for error code  with original pipe here.
+        argv[2] = NULL;
         return (1);
     }
     else

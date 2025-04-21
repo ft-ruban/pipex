@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:02:13 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/17 13:57:48 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/21 13:40:31 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 int main(int argc, char *argv[], char **env)
 {
     int error_code;
+    int ret;
+    
     if (argc != 5)  //TODO if (ft_check_args() == 1)
     {
         ft_printfd("NOT 5 ARG\n");
@@ -30,10 +32,8 @@ int main(int argc, char *argv[], char **env)
     ft_printfd("PARSING PASSED\n");    
     ft_printfd("\n\n\n\n");
     
-    ft_pipex(argv, env);
-    //TODO while (cmds)
-    //TODO      ft_exec()
-    //TODO ft_cleanup
+    ret = ft_pipex(argv, env);
+    return(ret);
     ft_printf("Program worked :>\n");
     printf("CMD: %s\n",argv[2]);
     return(0);

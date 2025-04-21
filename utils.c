@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:22:53 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/11 08:43:18 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/21 13:30:37 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ void    exit_function(int error_code, char **argv)
         exit(127);
     }
     ft_printf("error_code : %d \n", error_code);
-    exit(2);
+    exit(1);
 }

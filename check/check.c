@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:10:09 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/17 11:52:09 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/21 14:35:02 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ int ft_check_args(char *argv[], char **env, int i)
     char *path;
     
     path = NULL;
-    if(ft_check_infile(argv[1]))
-        return (2);
+
     while (env[i] || !path)
     {
         if (!ft_strncmp(env[i], "PATH=", 5))
@@ -43,6 +42,12 @@ int ft_check_args(char *argv[], char **env, int i)
             break;
         }
         i++;
+    }
+    
+    if(ft_check_infile(argv))
+    {
+        return (ft_check_args_final(argv,path, 0));
+        //return (2);
     }
     printf("argv[2] : %s\n",argv[2]); //TORM
     if(ft_check_cmd (argv[2], path, 0, NULL))

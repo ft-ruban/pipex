@@ -6,7 +6,7 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:27:36 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/17 16:40:33 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/21 14:00:44 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char *find_path(char *path, char *cmd)
     return(find_path_loop(result_split, NULL, buff, NULL));
 }
 
+//TODO IF NO MODIFICATION CREATE CHILD_EXEC INSTEAD
 //25 lines if I rm the printfd LESS GO
 void child_in_exec(char *cmd, char **env, int *fd)
 {
@@ -85,7 +86,7 @@ void child_in_exec(char *cmd, char **env, int *fd)
             free(path);
             child_error(-42, fd);
         }
-        ft_printfd("THEENDOFCHILDIN\n\n\n\n\n\n",args[2]);
+        // ft_printfd("THEENDOFCHILDIN\n\n\n\n\n\n",args[2]);
         execve(path, args, NULL);
         free_double_array(args,NULL, path, NULL);
         exit(-1);

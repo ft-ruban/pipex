@@ -6,6 +6,7 @@ int     ft_pipex(char **argv, char **env)
     pid_t   first_child;
     pid_t   second_child;
     int     status;
+    int     status_two;
 
     if(pipe(pipe_fd) == -1)
         exit(-1);
@@ -22,11 +23,19 @@ int     ft_pipex(char **argv, char **env)
         //exit(0); //TORM
         child_out(argv, env, pipe_fd);
     }
-    if (waitpid(first_child, &status, 0) == first_child)
-        printf("both child terminated\n");//if (waitpid(second_child, &status, 0) == second_child)
     close(pipe_fd[0]);
     close(pipe_fd[1]);
-    return 0;
+    // if (waitpid(first_child, &status, 0) == first_child && waitpid(second_child, &status_two, 0))
+    //     printf("both child terminated\n");//if (waitpid(second_child, &status, 0) == second_child)
+    waitpid(first_child, &status, 0);
+    waitpid(second_child, &status_two, 0);
+
+    return (status_two >> 8);
 }
 
 //tester pipex42
+
+// int bait = waitpid(-1, NULL, 0);
+//     while (bait >= 0){
+//         bait = waitpid(-1, NULL, 0);
+//     }
