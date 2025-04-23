@@ -6,77 +6,117 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:29:05 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/17 15:57:37 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/23 17:00:54 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/pipex.h"
 
-char *return_path(char **env, char *cmd, char *path)
+char	*search_executable_in_paths(char **path_dirs, char *path_prefix,
+		char *cmd_name, char *full_path)
 {
-    int i;
-    //char *path;
-    char *final_result;
-    
-    final_result = NULL;
-    //path = NULL;
-    i = 0;
-    while (env[i] || !path)
-    {
-        if(!ft_strncmp(env[i], "PATH=", 5))
-        {
-            path = ft_strdup(env[i]); //OK
-            if (path == NULL)
-                return (NULL);
-            final_result = find_path(path, cmd);//WIP
-            if (final_result == NULL)
-            {
-                free(path);
-                return (NULL);
-            }
-            break;
-        }
-        i++;
-    }
-    return(final_result);
+	int	i;
+
+	i = 0;
+	while (path_dirs[i])
+	{
+		path_prefix = ft_strjoin(path_dirs[i], "/");
+		if (!path_prefix)
+			return (free_arrays(NULL, path_dirs, cmd_name, NULL));
+		full_path = ft_strjoin(path_prefix, cmd_name);
+		if (!full_path)
+			return (free_arrays(NULL, path_dirs, cmd_name, path_prefix));
+		free(path_prefix);
+		if (!access(full_path, X_OK))
+		{
+			free_arrays(path_dirs, NULL, cmd_name, NULL);
+			return (full_path);
+		}
+		free(full_path);
+		i++;
+	}
+	free_arrays(path_dirs, NULL, cmd_name, NULL);
+	return (NULL);
 }
 
-char *free_double_array(char **one, char **two, char *three, char *four)
+char	*prepare_path_resolution(char *path, char *cmd)
 {
-    int i;
+	char	**path_dirs;
+	char	**cmd_parts;
+	char	*cmd_name;
 
-    i = 0;
-    if (one)
-    {
-        while(one[i])
-        {
-            free(one[i]);
-            i++;
-        }
-        free(one);
-    }
-    i = 0;
-    if (two)
-    {
-        while(two[i])
-        {
-            free(two[i]);
-            i++;
-        }
-        free(two);
-    }
-    if (three)
-        free(three);
-    if (four)
-        free(four);
-    return (NULL);
+	cmd_name = NULL;
+	path_dirs = ft_split(path, ':');
+	if (!path_dirs)
+		return (NULL);
+	cmd_parts = ft_split(cmd, ' ');
+	if (!cmd_parts || !path_dirs)
+		return (free_arrays(path_dirs, NULL, NULL, NULL));
+	if (cmd_parts[0])
+		cmd_name = ft_strdup(cmd_parts[0]);
+	if (!cmd_name)
+		return (free_arrays(path_dirs, cmd_parts, NULL, NULL));
+	free_arrays(NULL, cmd_parts, NULL, NULL);
+	return (search_executable_in_paths(path_dirs, NULL, cmd_name, NULL));
 }
 
-void    child_error(int infile, int *fd)
+char	*path_finder(char **env, char *cmd, char *path)
 {
-    if (infile >= 0)
-        close(infile);
-    if(fd[1])
-        close(fd[1]);
-    exit(-1);
+	int		i;
+	char	*executable_in_paths;
+
+	executable_in_paths = NULL;
+	i = 0;
+	while (env[i] || !path)
+	{
+		if (!ft_strncmp(env[i], "PATH=", 5))
+		{
+			path = ft_strdup(env[i]);
+			if (path == NULL)
+				return (NULL);
+			executable_in_paths = prepare_path_resolution(path, cmd);
+			free(path);
+			break ;
+		}
+		i++;
+	}
+	return (executable_in_paths);
+}
+
+char	*free_arrays(char **one, char **two, char *three, char *four)
+{
+	int	i;
+
+	if (one)
+	{
+		i = 0;
+		while (one[i])
+			free(one[i++]);
+		free(one);
+	}
+	if (two)
+	{
+		i = 0;
+		while (two[i])
+			free(two[i++]);
+		free(two);
+	}
+	free(three);
+	free(four);
+	return (NULL);
+}
+
+void	child_error(int infile, int *fd, int error, char *cmd)
+{
+	if (error == 1)
+		ft_printfd("command not found: %s\n", cmd);
+	if (infile >= 0)
+		close(infile);
+	if (fd[1])
+		close(fd[1]);
+	if (fd[0])
+		close(fd[0]);
+	if (infile == -42)
+		exit(-129);
+	exit(-255);
 }

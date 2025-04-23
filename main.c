@@ -6,45 +6,47 @@
 /*   By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:02:13 by ldevoude          #+#    #+#             */
-/*   Updated: 2025/04/21 13:40:31 by ldevoude         ###   ########lyon.fr   */
+/*   Updated: 2025/04/23 16:59:56 by ldevoude         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header/pipex.h"
 
-//TODO? ft_init_pipex()
-int main(int argc, char *argv[], char **env)
+// Main that would check if the argc are valids
+// then once everything is fine we launch ft_pipex
+// and save the return value
+// to return different values depending of what happened inside.
+
+int	begin_parsing(int argc, char **env, int i, int path_found)
 {
-    int error_code;
-    int ret;
-    
-    if (argc != 5)  //TODO if (ft_check_args() == 1)
-    {
-        ft_printfd("NOT 5 ARG\n");
-        exit_function(1, argv);
-    }
-    error_code = (ft_check_args(argv, env, 0));  //TODO ft_parse_cmds()  //TODO ft_parse_args()
-    if (error_code != 0)
-    {
-        ft_printfd("PARSING ERROR\n");
-        exit_function(error_code, argv);
-    }
-    ft_printfd("PARSING PASSED\n");    
-    ft_printfd("\n\n\n\n");
-    
-    ret = ft_pipex(argv, env);
-    return(ret);
-    ft_printf("Program worked :>\n");
-    printf("CMD: %s\n",argv[2]);
-    return(0);
+	if (argc != 5)
+		return (1);
+	if (!env)
+		return (1);
+	while (env[i])
+	{
+		if (!ft_strncmp(env[i], "PATH=", 5))
+		{
+			path_found = 1;
+			break ;
+		}
+		i++;
+	}
+	if (!path_found)
+		exit(1);
+	return (0);
 }
 
-/*
-- parent : check arg (le nombre ? acces infile ? access outfile ? path cmd1 ? path cmd2 ?)
-- créer un pipe
-- parent : fork pid1 (infile cmd1)
-    enfant : execve(cmd1)
-- parent : fork pid2
-    enfant : execve(cmd2)
-- parent : waitpid
-*/
+int	main(int argc, char *argv[], char **env)
+{
+	int	return_value_pipex;
+
+	if (begin_parsing(argc, env, 0, 0))
+		exit(1);
+	return_value_pipex = ft_pipex(argv, env);
+	if (return_value_pipex == 127)
+		ft_printfd("command not found: %s\n", argv[3]);
+	if (return_value_pipex == 255)
+		return (127);
+	return (return_value_pipex);
+}

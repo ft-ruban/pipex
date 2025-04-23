@@ -90,7 +90,7 @@ HEADER_LIBFTX = $(DIR_LIBFTX)/libft.h
 #####################################################
 all: $(NAME)
 
-$(NAME): $(OBJ) $(HEADER_LIBFTX)
+$(NAME): $(OBJ) $(HEADER_LIBFTX) Makefile
 	$(AR) $(AFLAG) $(NAME) $(OBJ)
 
 $(LIBPRINTF):

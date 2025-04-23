@@ -6,7 +6,7 @@
 #    By: ldevoude <ldevoude@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 15:21:37 by ldevoude          #+#    #+#              #
-#    Updated: 2025/04/17 16:33:10 by ldevoude         ###   ########lyon.fr    #
+#    Updated: 2025/04/23 17:10:43 by ldevoude         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,13 +28,12 @@ CC             =   cc
 #####################################################
 #					FLAGS							#
 #####################################################
-CFLAGS         =   -Wall -Wextra -Werror -g
+CFLAGS         =   -Wall -Wextra -Werror
 
 #####################################################
 #					DIRECTORY						#
 #####################################################
 DIR_PIPEX  =   .
-DIR_PIPEX_CHECK =  ./check
 DIR_PIPEX_CHILD =  ./child
 DIR_LIBFTX     =   ./libftx
 OBJ_DIR        =   obj_pipex
@@ -61,24 +60,14 @@ RED            =   \033[1;31m
 #####################################################
 PIPEX_SRC    =   $(addsuffix .c, \
 						main \
-						check_cmd \
-						check_file \
-						check_utils \
-						child_in_pathed\
+						child_pathed \
 						child_in \
 						child_out\
 						child_utils \
-						check \
-						ft_pipex\
-						utils)
+						ft_pipex)
 
-PIPEX_CHECK_SRC = $(addsuffix .c, \
-						check_cmd \
-						check_file \
-						check_utils \
-						check)
 PIPEX_CHILD_SRC = $(addsuffix .c, \
-						child_in_pathed\
+						child_pathed\
 						child_in \
 						child_out\
 						child_utils)
@@ -88,7 +77,6 @@ PIPEX_CHILD_SRC = $(addsuffix .c, \
 #####################################################
 
 PIPEX_OBJ = $(addprefix $(OBJ_DIR)/, $(PIPEX_SRC:.c=.o))
-PIPEX_CHECK_OBJ = $(addprefix $(OBJ_DIR)/, $(PIPEX_CHECK_SRC:.c=.o))
 PIPEX_CHILD_OBJ = $(addprefix $(OBJ_DIR)/, $(PIPEX_CHILD_SRC:.c=.o))
 DEPENDANCY_FILES =   $(PIPEX_OBJ:.o=.d) #to create dep
 
@@ -122,9 +110,7 @@ fclean          :    clean
 	
 debug           :   
 					@echo "Current directory: $(shell pwd)"
-					@echo "Checking push_swap files\:"
 					@ls -l $(DIR_PIPEX)
-					@echo "Checking libftx files\:"
 					@ls -l $(DIR_LIBFTX)
 					@echo $(shell -e) "${LIGHTPURPLE}I never thought I'd see a Resonance Cascade, let alone create one!"
 
@@ -134,18 +120,20 @@ re               :	fclean all
 #					COMMANDS						#
 #####################################################
 
-$(LIBLIBFTX):
-	$(MAKE) -C $(DIR_LIBFTX)
-
-$(NAME): $(OBJ_DIR) $(PIPEX_OBJ) $(PIPEX_CHECK_OBJ) $(PIPEX_CHILD_OBJ) $(HEADER_PIPEX) $(LIBLIBFTX)
+$(NAME): $(OBJ_DIR) $(PIPEX_OBJ) $(PIPEX_CHILD_OBJ) $(HEADER_PIPEX) $(LIBLIBFTX)
 		 $(CC) $(CFLAGS) -o $(NAME) $(PIPEX_OBJ) $(LIBLIBFTX)
 		@echo "$(GREEN) $(NAME) is now ready to run ／人◕ ‿‿ ◕人＼ "
 
+$(LIBLIBFTX): ./libftx/Makefile force
+	$(MAKE)	-C $(DIR_LIBFTX)
+
+force:
+
+$(OBJ_DIR)/%.d: $(DIR_PIPEX)/%.c | $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -I$(DIR_PIPEX) -MM -MP -MT '$(@:.d=.o) $@' -MF $@ $<
+
 $(OBJ_DIR)/%.o	   : $(DIR_PIPEX)/%.c | $(OBJ_DIR)
 					 $(CC) $(CFLAGS) -I$(DIR_PIPEX) -o $@ -c $<
-
-$(OBJ_DIR)/%.o	   : $(DIR_PIPEX_CHECK)/%.c | $(OBJ_DIR)
-					 $(CC) $(CFLAGS) -I$(DIR_PIPEX_CHECK) -o $@ -c $<	
 
 $(OBJ_DIR)/%.o	   : $(DIR_PIPEX_CHILD)/%.c | $(OBJ_DIR)
 					 $(CC) $(CFLAGS) -I$(DIR_PIPEX_CHILD) -o $@ -c $<					 
